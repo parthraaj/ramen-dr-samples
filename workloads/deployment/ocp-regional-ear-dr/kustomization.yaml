@@ -1,0 +1,11 @@
+---
+resources:
+  - ../base
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: pvc-vol-level-dr-1
+    patch: |-
+      - op: replace
+        path: /spec/storageClassName
+        value: sc-vol-level-dr
