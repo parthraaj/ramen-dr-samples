@@ -9,3 +9,11 @@ patches:
       - op: replace
         path: /spec/storageClassName
         value: sc-vol-level-dr
+  - target:
+      kind: Deployment
+      name: pod-busybox-dr-1
+    patch: |-
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value:
+          kubernetes.io/hostname: ramen-ocp-1-1.xiv.ibm.com
