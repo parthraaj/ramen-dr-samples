@@ -7,11 +7,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      appname: busybox
+      app-key: busybox
   template:
     metadata:
       labels:
-        appname: busybox
+        app-key: busybox
     spec:
       containers:
         - name: logger

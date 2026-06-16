@@ -1,6 +1,7 @@
 ---
 resources:
   - ../base
+
 patches:
   - target:
       kind: PersistentVolumeClaim
@@ -9,6 +10,7 @@ patches:
       - op: replace
         path: /spec/storageClassName
         value: sc-vol-level-dr
+
   - target:
       kind: Deployment
       name: pod-busybox-dr-1

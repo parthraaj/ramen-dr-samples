@@ -2,5 +2,10 @@
 resources:
   - pvc.yaml
   - deployment.yaml
-commonLabels:
-  appname: busybox
+
+labels:
+  - pairs:
+      appname: vol-level-dr
+      app-key: busybox
+    includeSelectors: false
+    includeTemplates: true
