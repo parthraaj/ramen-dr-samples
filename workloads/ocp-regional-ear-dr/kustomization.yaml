@@ -18,4 +18,4 @@ patches:
       - op: add
         path: /spec/template/spec/nodeSelector
         value:
-          kubernetes.io/hostname: ramen-ocp-1-1.xiv.ibm.com
+          role: dr-workload
