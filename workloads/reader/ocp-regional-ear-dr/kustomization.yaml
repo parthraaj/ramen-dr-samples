@@ -5,7 +5,7 @@ resources:
 patches:
   - target:
       kind: PersistentVolumeClaim
-      name: pvc-vol-level-dr-1
+      name: pvc-reader
     patch: |-
       - op: replace
         path: /spec/storageClassName
@@ -13,9 +13,9 @@ patches:
 
   - target:
       kind: Deployment
-      name: pod-busybox-dr-1
+      name: pod-busybox-reader
     patch: |-
       - op: add
         path: /spec/template/spec/nodeSelector
         value:
-          role: dr-workload
+          role: dr-workload-reader

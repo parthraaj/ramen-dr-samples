@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-busybox-reader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app-key: busybox-reader
+  template:
+    metadata:
+      labels:
+        app-key: busybox-reader
+    spec:
+      containers:
+      - name: busybox
+        image: quay.io/nirsof/busybox:stable
+        command:
+        - tail
+        - -f
+        - /dev/null
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: pvc-reader

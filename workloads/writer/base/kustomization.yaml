@@ -6,6 +6,6 @@ resources:
 labels:
   - pairs:
       appname: vol-level-dr
-      app-key: busybox
+      app-key: busybox-writer
     includeSelectors: false
     includeTemplates: true

@@ -1,17 +1,16 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pod-busybox-dr-1
+  name: pod-busybox-writer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app-key: busybox
+      app-key: busybox-writer
   template:
     metadata:
       labels:
-        app-key: busybox
+        app-key: busybox-writer
     spec:
       containers:
         - name: logger
@@ -37,4 +36,4 @@ spec:
       volumes:
         - name: varlog
           persistentVolumeClaim:
-            claimName: pvc-vol-level-dr-1
+            claimName: pvc-writer

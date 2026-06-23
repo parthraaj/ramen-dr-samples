@@ -1,0 +1,20 @@
+resources:
+- ../base
+
+patches:
+- target:
+    kind: PersistentVolumeClaim
+    name: pvc-writer
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: sc-vol-level-dr
+
+- target:
+    kind: Deployment
+    name: pod-busybox-writer
+  patch: |-
+    - op: add
+      path: /spec/template/spec/nodeSelector
+      value:
+        role: dr-workload-writer

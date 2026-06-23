@@ -1,12 +1,10 @@
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-vol-level-dr-1
+  name: pvc-writer
 spec:
   accessModes:
     - ReadWriteOnce
-  # Customize in your overlay.
   storageClassName: STORAGE_CLASS_NAME
   resources:
     requests:

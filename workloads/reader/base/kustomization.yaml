@@ -1,0 +1,11 @@
+---
+resources:
+  - pvc.yaml
+  - deployment.yaml
+
+labels:
+  - pairs:
+      appname: vol-level-dr
+      app-key: busybox-reader
+    includeSelectors: false
+    includeTemplates: true
