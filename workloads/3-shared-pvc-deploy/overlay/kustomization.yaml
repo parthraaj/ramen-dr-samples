@@ -1,0 +1,10 @@
+resources:
+  - ../1-overlay
+  - ../2-overlay
+  - ../3-overlay
+  - ../4-overlay
+labels:
+  - pairs:
+      appname: shared-pvc-deploy-dr
+    includeSelectors: false
+    includeTemplates: true

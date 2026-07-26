@@ -1,0 +1,15 @@
+apiVersion: ramendr.openshift.io/v1alpha1
+kind: DRPlacementControl
+metadata:
+  name: shared-pvc-deploy-dr-drpc
+  namespace: shared-pvc-deploy-dr
+spec:
+  preferredCluster: ramen-ocp1
+  drPolicyRef:
+    name: ramen-policy-1-2
+  placementRef:
+    kind: Placement
+    name: shared-pvc-deploy-dr-placement
+  pvcSelector:
+    matchLabels:
+      appname: shared-pvc-deploy-dr

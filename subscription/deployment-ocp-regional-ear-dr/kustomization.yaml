@@ -5,7 +5,6 @@ namespace: vol-level-dr
 commonLabels:
   app: vol-level-dr
 patches:
-  # Customize path to application.
   - target:
       kind: Subscription
       name: subscription

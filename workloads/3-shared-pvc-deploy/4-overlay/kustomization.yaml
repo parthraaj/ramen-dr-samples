@@ -1,0 +1,32 @@
+resources:
+  - ../base
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: pvc-shared-template
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: pvc-vol-4
+      - op: replace
+        path: /spec/storageClassName
+        value: sc-vol-level-dr-b
+  - target:
+      kind: Deployment
+      name: deploy-shared-template
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: deploy-vol-4
+      - op: replace
+        path: /spec/selector/matchLabels/app-key
+        value: vol-4
+      - op: replace
+        path: /spec/template/metadata/labels/app-key
+        value: vol-4
+      - op: replace
+        path: /spec/template/spec/affinity/podAffinity/requiredDuringSchedulingIgnoredDuringExecution/0/labelSelector/matchLabels/app-key
+        value: vol-4
+      - op: replace
+        path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+        value: pvc-vol-4
