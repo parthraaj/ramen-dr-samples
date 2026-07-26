@@ -1,0 +1,8 @@
+resources:
+  - ../1-overlay
+  - ../2-overlay
+labels:
+  - pairs:
+      appname: sts-pvc-dr
+    includeSelectors: false
+    includeTemplates: true

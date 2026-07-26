@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-template
+spec:
+  serviceName: sts-template
+  replicas: 2
+  selector:
+    matchLabels:
+      app-key: sts-template
+  template:
+    metadata:
+      labels:
+        app-key: sts-template
+    spec:
+      containers:
+        - name: busybox
+          image: quay.io/nirsof/busybox:stable
+          command: ["tail", "-f", "/dev/null"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: STORAGE_CLASS_NAME
+        resources:
+          requests:
+            storage: 1Gi

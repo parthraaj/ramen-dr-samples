@@ -1,0 +1,26 @@
+resources:
+  - ../base
+patches:
+  - target:
+      kind: StatefulSet
+      name: sts-template
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: sts-2
+      - op: replace
+        path: /spec/serviceName
+        value: sts-2
+      - op: replace
+        path: /spec/selector/matchLabels/app-key
+        value: sts-2
+      - op: replace
+        path: /spec/template/metadata/labels/app-key
+        value: sts-2
+      - op: replace
+        path: /spec/volumeClaimTemplates/0/spec/storageClassName
+        value: sc-vol-level-dr-b
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value:
+          role: dr-workload-sts-2
