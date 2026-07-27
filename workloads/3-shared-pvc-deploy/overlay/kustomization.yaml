@@ -3,6 +3,9 @@ resources:
   - ../2-overlay
   - ../3-overlay
   - ../4-overlay
+
+namespace: shared-pvc-deploy-dr
+
 labels:
   - pairs:
       appname: shared-pvc-deploy-dr
