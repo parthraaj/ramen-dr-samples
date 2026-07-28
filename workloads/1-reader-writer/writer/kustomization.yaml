@@ -1,0 +1,58 @@
+resources:
+  - ../base
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: pvc-template
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: pvc-writer
+      - op: replace
+        path: /spec/storageClassName
+        value: sc-vol-level-dr
+  - target:
+      kind: Deployment
+      name: deploy-template
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: deploy-writer
+      - op: replace
+        path: /spec/selector/matchLabels/app-key
+        value: writer
+      - op: replace
+        path: /spec/template/metadata/labels/app-key
+        value: writer
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value:
+          role: dr-workload-writer
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: logger
+      - op: replace
+        path: /spec/template/spec/containers/0/command
+        value:
+          - sh
+          - -c
+          - |
+            emit() {
+                echo "$(date) $1" | tee -a /data/ramen.log
+                sync
+            }
+            trap "emit STOP; exit" TERM
+            emit START
+            while true; do
+                sleep 10 & wait
+                emit UPDATE
+            done
+      - op: replace
+        path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+        value: pvc-writer
+namespace: vol-level-dr
+labels:
+  - pairs:
+      appname: vol-level-dr
+    includeSelectors: false
+    includeTemplates: true

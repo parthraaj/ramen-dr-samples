@@ -1,0 +1,39 @@
+resources:
+  - ../base
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: pvc-template
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: pvc-reader
+      - op: replace
+        path: /spec/storageClassName
+        value: sc-vol-level-dr
+  - target:
+      kind: Deployment
+      name: deploy-template
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: deploy-reader
+      - op: replace
+        path: /spec/selector/matchLabels/app-key
+        value: reader
+      - op: replace
+        path: /spec/template/metadata/labels/app-key
+        value: reader
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value:
+          role: dr-workload-reader
+      - op: replace
+        path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+        value: pvc-reader
+namespace: vol-level-dr
+labels:
+  - pairs:
+      appname: vol-level-dr
+    includeSelectors: false
+    includeTemplates: true

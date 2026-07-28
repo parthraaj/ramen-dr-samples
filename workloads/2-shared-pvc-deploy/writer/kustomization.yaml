@@ -1,11 +1,11 @@
 resources:
-  - ../1-overlay
-  - ../2-overlay
-  - ../3-overlay
-  - ../4-overlay
-
+  - ../vol-1
+  - ../vol-2
+  - ../vol-3
+  - ../vol-4
+components:
+  - ../components/writer-role
 namespace: shared-pvc-deploy-dr
-
 labels:
   - pairs:
       appname: shared-pvc-deploy-dr

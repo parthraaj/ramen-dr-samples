@@ -1,0 +1,78 @@
+resources:
+  - ../vol-1
+  - ../vol-2
+  - ../vol-3
+  - ../vol-4
+patches:
+  - target:
+      kind: Deployment
+      name: deploy-vol-1
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: deploy-vol-1-reader
+  - target:
+      kind: Deployment
+      name: deploy-vol-2
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: deploy-vol-2-reader
+  - target:
+      kind: Deployment
+      name: deploy-vol-3
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: deploy-vol-3-writer
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: logger
+      - op: replace
+        path: /spec/template/spec/containers/0/command
+        value:
+          - sh
+          - -c
+          - |
+            emit() {
+                echo "$(date) $1" | tee -a /data/ramen.log
+                sync
+            }
+            trap "emit STOP; exit" TERM
+            emit START
+            while true; do
+                sleep 10 & wait
+                emit UPDATE
+            done
+  - target:
+      kind: Deployment
+      name: deploy-vol-4
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: deploy-vol-4-writer
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: logger
+      - op: replace
+        path: /spec/template/spec/containers/0/command
+        value:
+          - sh
+          - -c
+          - |
+            emit() {
+                echo "$(date) $1" | tee -a /data/ramen.log
+                sync
+            }
+            trap "emit STOP; exit" TERM
+            emit START
+            while true; do
+                sleep 10 & wait
+                emit UPDATE
+            done
+namespace: shared-pvc-deploy-dr
+labels:
+  - pairs:
+      appname: shared-pvc-deploy-dr
+    includeSelectors: false
+    includeTemplates: true

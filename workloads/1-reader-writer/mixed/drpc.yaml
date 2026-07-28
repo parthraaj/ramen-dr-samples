@@ -1,0 +1,15 @@
+apiVersion: ramendr.openshift.io/v1alpha1
+kind: DRPlacementControl
+metadata:
+  name: myapp-drpc
+  namespace: vol-level-dr
+spec:
+  preferredCluster: ramen-ocp1
+  drPolicyRef:
+    name: ramen-policy-1-2
+  placementRef:
+    kind: Placement
+    name: vol-level-drapp-placement
+  pvcSelector:
+    matchLabels:
+      appname: vol-level-dr

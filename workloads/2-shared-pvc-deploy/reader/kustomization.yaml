@@ -1,0 +1,13 @@
+resources:
+  - ../vol-1
+  - ../vol-2
+  - ../vol-3
+  - ../vol-4
+components:
+  - ../components/reader-role
+namespace: shared-pvc-deploy-dr
+labels:
+  - pairs:
+      appname: shared-pvc-deploy-dr
+    includeSelectors: false
+    includeTemplates: true

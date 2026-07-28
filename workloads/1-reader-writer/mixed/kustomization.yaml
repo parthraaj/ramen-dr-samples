@@ -1,0 +1,9 @@
+resources:
+  - ../reader
+  - ../writer
+namespace: vol-level-dr
+labels:
+  - pairs:
+      appname: vol-level-dr
+    includeSelectors: false
+    includeTemplates: true

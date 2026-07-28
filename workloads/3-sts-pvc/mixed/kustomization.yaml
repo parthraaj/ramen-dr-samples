@@ -1,0 +1,12 @@
+resources:
+  - ../1-overlay
+  - ../2-overlay
+components:
+  - ../components/reader-role-sts-1
+  - ../components/writer-role-sts-2
+namespace: sts-pvc-dr
+labels:
+  - pairs:
+      appname: sts-pvc-dr
+    includeSelectors: false
+    includeTemplates: true
