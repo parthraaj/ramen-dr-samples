@@ -1,0 +1,17 @@
+resources:
+  - ../vol-1
+  - ../vol-2
+  - ../vol-3
+  - ../vol-4
+components:
+  - ../components/pvc-size-100gi
+  - ../components/reader-role-vol-1
+  - ../components/reader-role-vol-2
+  - ../components/writer-stress-role-vol-3
+  - ../components/writer-stress-role-vol-4
+namespace: shared-pvc-deploy-dr
+labels:
+  - pairs:
+      appname: shared-pvc-deploy-dr
+    includeSelectors: false
+    includeTemplates: true
