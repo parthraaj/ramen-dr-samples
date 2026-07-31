@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-scale-25
+  labels:
+    appname: scale-pvc-dr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: sc-scale-dr-2
+  resources:
+    requests:
+      storage: 40Gi

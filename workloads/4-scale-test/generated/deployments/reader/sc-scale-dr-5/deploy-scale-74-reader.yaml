@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-scale-74-reader
+  labels:
+    appname: scale-pvc-dr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app-key: scale-74
+  template:
+    metadata:
+      labels:
+        app-key: scale-74
+        appname: scale-pvc-dr
+        scale-test: spread
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              scale-test: spread
+      containers:
+        - name: busybox
+          image: quay.io/nirsof/busybox:stable
+          command: ["tail", "-f", "/dev/null"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: pvc-scale-74

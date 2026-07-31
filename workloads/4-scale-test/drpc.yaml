@@ -1,0 +1,15 @@
+apiVersion: ramendr.openshift.io/v1alpha1
+kind: DRPlacementControl
+metadata:
+  name: scale-pvc-dr-drpc
+  namespace: scale-pvc-dr
+spec:
+  preferredCluster: ramen-ocp1
+  drPolicyRef:
+    name: ramen-policy-1-2
+  placementRef:
+    kind: Placement
+    name: scale-pvc-dr-placement
+  pvcSelector:
+    matchLabels:
+      appname: scale-pvc-dr
