@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-argo-2-writer
+  labels:
+    appname: argocd-scale-dr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app-key: argo-2
+  template:
+    metadata:
+      labels:
+        app-key: argo-2
+        appname: argocd-scale-dr
+        scale-test: spread
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              scale-test: spread
+      containers:
+        - name: logger
+          image: quay.io/nirsof/busybox:stable
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - |
+              usage() { df /data | awk 'NR==2 {gsub("%","",$5); print $5}'; }
+              emit() {
+                  echo "$(date) $1" | tee -a /data/ramen.log
+                  sync
+              }
+              trap "emit STOP; exit" TERM
+              emit START
+              i=0
+              while true; do
+                  u=$(usage)
+                  if [ "$u" -ge 90 ]; then
+                      emit "usage ${u}%, cleaning up to 50%"
+                      while [ "$u" -ge 50 ]; do
+                          oldest=$(ls -tr /data/chunk_*.bin 2>/dev/null | head -1)
+                          [ -z "$oldest" ] && break
+                          rm -f "$oldest"
+                          u=$(usage)
+                      done
+                      emit "usage now ${u}%"
+                  fi
+                  dd if=/dev/zero of=/data/chunk_$i.bin bs=1M count=1024 status=none
+                  sync
+                  i=$((i+1))
+                  emit UPDATE
+                  sleep 10 & wait
+              done
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: pvc-argo-2

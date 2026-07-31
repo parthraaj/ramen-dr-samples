@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: argocd-scale-dr-appset
+  namespace: openshift-gitops
+spec:
+  generators:
+    - clusterDecisionResource:
+        configMapRef: argocd-scale-dr-appset
+        labelSelector:
+          matchLabels:
+            cluster.open-cluster-management.io/placement: argocd-scale-dr-appset
+        requeueAfterSeconds: 30
+  template:
+    metadata:
+      name: 'argocd-scale-dr-{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/parthraaj/ramen-dr-samples
+        targetRevision: main
+        path: workloads/6-argocd-scale-test
+      destination:
+        server: '{{server}}'
+        namespace: argocd-scale-dr
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - PruneLast=true

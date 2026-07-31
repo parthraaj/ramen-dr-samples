@@ -1,0 +1,18 @@
+resources:
+  - generated/pvcs/writer/pvc-argo-1.yaml
+  - generated/deployments/writer/deploy-argo-1-writer.yaml
+  - generated/pvcs/writer/pvc-argo-2.yaml
+  - generated/deployments/writer/deploy-argo-2-writer.yaml
+  - generated/pvcs/writer/pvc-argo-3.yaml
+  - generated/deployments/writer/deploy-argo-3-writer.yaml
+  - generated/pvcs/writer/pvc-argo-4.yaml
+  - generated/deployments/writer/deploy-argo-4-writer.yaml
+  - generated/pvcs/reader/pvc-argo-5.yaml
+  - generated/deployments/reader/deploy-argo-5-reader.yaml
+  - generated/pvcs/reader/pvc-argo-6.yaml
+  - generated/deployments/reader/deploy-argo-6-reader.yaml
+  - generated/pvcs/reader/pvc-argo-7.yaml
+  - generated/deployments/reader/deploy-argo-7-reader.yaml
+  - generated/pvcs/reader/pvc-argo-8.yaml
+  - generated/deployments/reader/deploy-argo-8-reader.yaml
+namespace: argocd-scale-dr
