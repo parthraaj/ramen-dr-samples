@@ -8,6 +8,7 @@ SIZE=40Gi
 NAMESPACE=scale-pvc-dr
 APPNAME=scale-pvc-dr
 WRITER_SC_COUNT=2
+CHUNK_MB=1024
 
 SCS=(sc-scale-dr-1 sc-scale-dr-2 sc-scale-dr-3 sc-scale-dr-4 sc-scale-dr-5)
 
@@ -87,15 +88,31 @@ spec:
             - sh
             - -c
             - |
+              usage() { df /data | awk 'NR==2 {gsub("%","",\$5); print \$5}'; }
               emit() {
                   echo "\$(date) \$1" | tee -a /data/ramen.log
                   sync
               }
               trap "emit STOP; exit" TERM
               emit START
+              i=0
               while true; do
-                  sleep 10 & wait
+                  u=\$(usage)
+                  if [ "\$u" -ge 90 ]; then
+                      emit "usage \${u}%, cleaning up to 50%"
+                      while [ "\$u" -ge 50 ]; do
+                          oldest=\$(ls -tr /data/chunk_*.bin 2>/dev/null | head -1)
+                          [ -z "\$oldest" ] && break
+                          rm -f "\$oldest"
+                          u=\$(usage)
+                      done
+                      emit "usage now \${u}%"
+                  fi
+                  dd if=/dev/zero of=/data/chunk_\$i.bin bs=1M count=$CHUNK_MB status=none
+                  sync
+                  i=\$((i+1))
                   emit UPDATE
+                  sleep 10 & wait
               done
           volumeMounts:
             - name: data
