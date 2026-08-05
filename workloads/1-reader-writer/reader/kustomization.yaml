@@ -10,7 +10,7 @@ patches:
         value: pvc-reader
       - op: replace
         path: /spec/storageClassName
-        value: sc-silver-csi-integration
+        value: sc-silver-csi
   - target:
       kind: Deployment
       name: deploy-template

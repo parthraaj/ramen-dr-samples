@@ -1,9 +1,9 @@
 resources:
   - ../reader
   - ../writer
-namespace: silver-csi-integration
+namespace: silver-csi
 labels:
   - pairs:
-      appname: silver-csi-integration
+      appname: silver-csi
     includeSelectors: false
     includeTemplates: true
