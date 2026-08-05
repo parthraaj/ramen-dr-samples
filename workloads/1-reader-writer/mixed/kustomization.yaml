@@ -1,9 +1,9 @@
 resources:
   - ../reader
   - ../writer
-namespace: vol-level-dr
+namespace: silver-csi-integration
 labels:
   - pairs:
-      appname: vol-level-dr
+      appname: silver-csi-integration
     includeSelectors: false
     includeTemplates: true
